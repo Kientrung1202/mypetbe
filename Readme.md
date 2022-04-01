@@ -23,7 +23,8 @@
 Frameworks and technology using to build this project:
 * [Nodejs](https://nodejs.dev/)
 * [Express](https://expressjs.com/)
-* [Mysql](https://www.mysql.com/)
+* [Mysql](https://www.mysql.com/) and use [Sequelize](https://sequelize.org/)
+* [Tyscript](https://www.typescriptlang.org/)
 ***
 ### Getting started
 To get a local copy up and running follow these simple example steps.
@@ -37,5 +38,6 @@ To get a local copy up and running follow these simple example steps.
 ### Database
 - Mysql is used in this project
 - Entity Relation Diagram
-***
-[Todo]
+<br />
+<img src="about/erd.png" />
+
