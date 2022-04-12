@@ -39,5 +39,8 @@ To get a local copy up and running follow these simple example steps.
 - Mysql is used in this project
 - Entity Relation Diagram
 <br />
-<img src="about/erd.png" />
+<div style="margin: 0 auto;">
+<img style="margin: 0 auto;width: 800px;height: 600px;" src="about/erd.png" />
+</div>
+
 
