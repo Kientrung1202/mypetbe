@@ -1,4 +1,4 @@
-import User from "../../../../models/user";
+import Users from "../../../../models/user";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { badRequest, success } from "../../../../utils/response";
@@ -8,7 +8,7 @@ import "dotenv/config";
 export const createUser = async (req: Request) => {
   const hash = await bcrypt.hash(req.body.password, 10);
   const { userId, userName, fullName, phone, address } = req.body;
-  return User.create({
+  return Users.create({
     userId,
     userName,
     password: hash,
@@ -22,7 +22,9 @@ export const createUser = async (req: Request) => {
 
 export const signIn = async (req: Request, res: Response) => {
   const { userName, password } = req.body;
-  const userInfo = await User.findOne({ where: { userName } });
+  const userInfo = await Users.findOne({
+    where: { userName },
+  });
   if (!userInfo) {
     res.json(badRequest("Username or password is incorrect!"));
   } else {
@@ -42,7 +44,7 @@ export const signIn = async (req: Request, res: Response) => {
               expiresIn: "7d", // if this is number, this is second
             }
           );
-          User.update(
+          Users.update(
             { lastLogin: new Date() },
             { where: { userId: userInfo.getDataValue("userId") } }
           )

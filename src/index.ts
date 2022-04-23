@@ -6,6 +6,8 @@ import express from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
 import glob from "glob";
+import { Sequelize } from "sequelize";
+import generateDb from "./models/generate";
 
 const app = express();
 const port = process.env.PORT;
@@ -18,10 +20,12 @@ app.listen(port, () => {
 });
 
 const connectDb = () => {
-  db.sequelize
-    .authenticate()
-    .then(() => console.log("Connect database successfully"))
-    .catch((err: Error) => console.log("Enable connect database", err));
+  generateDb().then(() => {
+    db.sequelize
+      .authenticate()
+      .then(() => console.log("Connect database successfully"))
+      .catch((err: Error) => console.log("Enable connect database", err));
+  });
 };
 
 const initApi = () => {
@@ -35,13 +39,15 @@ const initApi = () => {
   // for parsing application/x-www-form-urlencoded
   app.use(bodyParser.urlencoded({ extended: true }));
   // list router and use it
-  glob(__dirname + "/**/*.controller.ts", {}, (err, files) => {
+  // dung docker goi vao thi no ra __dirname = app/dist
+  glob(__dirname + "/**/*.controller.js", {}, (err, files) => {
+    console.log(__dirname);
     files.map((file: string) => {
-      // recursive
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const api = require(file);
       app.use(api);
     });
+    console.log(files);
     console.log("init api successfully");
   });
 };

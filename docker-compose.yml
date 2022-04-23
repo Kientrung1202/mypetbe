@@ -1,0 +1,34 @@
+version: "3.3"
+services:
+  postgres: 
+    image: postgres:10.8
+    restart: always
+    environment: 
+      - POSTGRES_USER=${MY_USER}
+      - POSTGRES_PASSWORD=${MY_PW}
+      - POSTGRES_DB=${MY_DB}
+      - POSTGRES_PORT=${MY_PORT}
+    ports:
+      - ${MY_PORT}:5432
+  api:
+    depends_on:
+      - postgres
+    build: .
+    restart: always
+    environment:
+      - MY_HOST=mysql
+      - MY_URL=${MY_URL}
+      - POSTGRES_PORT=${MY_PORT}
+      - POSTGRES_USER=${MY_USER}
+      - POSTGRES_PASSWORD=${MY_PW}
+      - POSTGRES_DB=${MY_DB}
+      - API_URL=${API_URL}
+      - PORT=${PORT}
+      - SECRET_KEY_JWT=${SECRET_KEY_JWT}
+    ports:
+      - ${PORT}:${PORT}
+    tty: true
+    stdin_open: true
+volumes:
+  dbdev:
+

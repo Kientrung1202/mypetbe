@@ -1,8 +1,8 @@
 import { NextFunction, Request } from "express";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
-import User from "@/models/user";
-import { ROLE } from "@/models/interface";
+import Users from "../../models/user";
+import { ROLE } from "../../utils/interface";
 
 const verifyToken = (req: Request, next: NextFunction) => {
   const token = req.headers["authorization"];
@@ -18,7 +18,7 @@ const verifyToken = (req: Request, next: NextFunction) => {
   });
 };
 const isUser = (req: Request, next: NextFunction) => {
-  User.findByPk(req.body.userId).then((user) => {
+  Users.findByPk(req.body.userId).then((user) => {
     const role = user?.getDataValue("role");
     if (role == ROLE.customer) {
       next();
@@ -28,7 +28,7 @@ const isUser = (req: Request, next: NextFunction) => {
   });
 };
 const isAdmin = (req: Request, next: NextFunction) => {
-  User.findByPk(req.body.userId).then((user) => {
+  Users.findByPk(req.body.userId).then((user) => {
     const role = user?.getDataValue("role");
     if (role == ROLE.admin) {
       next();

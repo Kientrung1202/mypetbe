@@ -1,11 +1,11 @@
-import User from "../../models/user";
+import Users from "../../models/user";
 import { NextFunction, Request, Response } from "express";
 import { badRequest } from "../../utils/response";
 
 const checkSignup = async (req: Request, res: Response, next: NextFunction) => {
   const { userName, phone } = req.body;
   try {
-    const userInfo = await User.findOne({
+    const userInfo = await Users.findOne({
       where: {
         userName,
       },
@@ -14,7 +14,7 @@ const checkSignup = async (req: Request, res: Response, next: NextFunction) => {
       res.json(badRequest("Username has already in use!"));
       return;
     }
-    const userInfo2 = await User.findOne({
+    const userInfo2 = await Users.findOne({
       where: {
         phone,
       },

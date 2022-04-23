@@ -1,10 +1,8 @@
 import { db } from "../db";
-// import { Sequelize } from "sequelize/types";
-// import { Sequelize, Model, Sequelize } from "sequelize";
-import { ROLE } from "./interface";
+import { ROLE } from "../utils/interface";
 import Sequelize from "sequelize";
 
-const User = db.sequelize.define(
+const Users = db.sequelize.define(
   "users",
   {
     userId: {
@@ -42,7 +40,7 @@ const User = db.sequelize.define(
       allowNull: false,
     },
     role: {
-      type: Sequelize.BOOLEAN,
+      type: Sequelize.INTEGER,
       defaultValue: ROLE.customer,
       get() {
         return this.getDataValue("role");
@@ -55,4 +53,4 @@ const User = db.sequelize.define(
     timestamps: false,
   }
 );
-export default User;
+export default Users;
