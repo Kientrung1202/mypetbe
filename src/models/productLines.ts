@@ -10,7 +10,7 @@ export const ProductLines = db.sequelize.define("productlines", {
     type: Sequelize.STRING(35),
     allowNull: false,
   },
-  textDecription: {
+  textDescription: {
     type: Sequelize.TEXT,
     allowNull: false,
   },

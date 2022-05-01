@@ -6,8 +6,7 @@ import express from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
 import glob from "glob";
-import { Sequelize } from "sequelize";
-import generateDb from "./models/generate";
+import generateDb from "./data/generate";
 
 const app = express();
 const port = process.env.PORT;
