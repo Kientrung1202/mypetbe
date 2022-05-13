@@ -28,7 +28,7 @@ export const signIn = async (req: Request, res: Response) => {
   if (!userInfo) {
     res.json(badRequest("Username or password is incorrect!"));
   } else {
-    await bcrypt.compare(
+    bcrypt.compare(
       password,
       userInfo.getDataValue("password"),
       (err, result) => {
@@ -53,6 +53,7 @@ export const signIn = async (req: Request, res: Response) => {
                 success({
                   token,
                   userName: userInfo.getDataValue("userName"),
+                  password: userInfo.getDataValue("password"),
                 })
               );
             })

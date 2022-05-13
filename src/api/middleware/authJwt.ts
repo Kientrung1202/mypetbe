@@ -1,10 +1,11 @@
-import { NextFunction, Request } from "express";
+import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 import Users from "../../models/user";
 import { ROLE } from "../../utils/interface";
+import CommonError from "../client/common/error";
 
-const verifyToken = (req: Request, next: NextFunction) => {
+const verifyToken = (req: Request) => {
   const token = req.headers["authorization"];
   if (!token) {
     throw new Error("No token provided!");
@@ -12,34 +13,41 @@ const verifyToken = (req: Request, next: NextFunction) => {
   jwt.verify(token, process.env.SECRET_KEY_JWT || "", (err, decoded) => {
     console.log(process.env.SECRET_KEY_JWT);
     if (err) throw new Error(err.toString());
-    else req.body.userId = decoded;
-    console.log(decoded);
-    next();
+    else req.body.user = decoded;
   });
 };
-const isUser = (req: Request, next: NextFunction) => {
-  Users.findByPk(req.body.userId).then((user) => {
-    const role = user?.getDataValue("role");
-    if (role == ROLE.customer) {
+const isUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    verifyToken(req);
+    console.log(req.body.user.userId, "userID day");
+    const admin = await Users.findByPk(req.body.user.userId);
+    const role = admin?.getDataValue("role");
+    if (role && role == ROLE.customer) {
       next();
       return;
     }
-    throw Error("You are not user! Signup now!");
-  });
+    throw Error("You must be authorization!");
+  } catch (err: any) {
+    return CommonError(req, res, err);
+  }
 };
-const isAdmin = (req: Request, next: NextFunction) => {
-  Users.findByPk(req.body.userId).then((user) => {
-    const role = user?.getDataValue("role");
-    if (role == ROLE.admin) {
+const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    verifyToken(req);
+    console.log(req.body.user.userId, "userID day");
+    const admin = await Users.findByPk(req.body.user.userId);
+    const role = admin?.getDataValue("role");
+    if (role && role == ROLE.customer) {
       next();
       return;
     }
-    throw Error("You are not admin!");
-  });
+    throw Error("You must be authorization!");
+  } catch (err: any) {
+    return CommonError(req, res, err);
+  }
 };
 
 export const authJwt = {
   isUser,
   isAdmin,
-  verifyToken,
 };

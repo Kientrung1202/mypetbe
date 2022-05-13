@@ -3,7 +3,7 @@ import { OrderDetails } from "../models/orderDetails";
 import { Orders } from "../models/orders";
 import { Payment } from "../models/payments";
 import Users from "../models/user";
-import { generateProductLine } from "./generateProductLines";
+import { generateProductLine } from "./genProductLines";
 import { generateProducts } from "./genProduct";
 
 const generateDb = async () => {

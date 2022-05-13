@@ -1,4 +1,3 @@
-import { generateProductCSV } from "./auto-generator";
 import { cleanField, getContentCSVFiles, getCSVFiles } from "./scanDataType";
 import { ProductLines } from "../models/productLines";
 
@@ -9,6 +8,7 @@ export const generateProductLine = async () => {
     const dataSeed: {
       productLine: string;
       productLineName: string;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       textDescription: any;
     }[] = [];
     content.map((line) => {
@@ -29,6 +29,7 @@ export const generateProductLine = async () => {
         return ProductLines.bulkCreate(dataSeed);
       })
       .catch((err) => console.log({ "ProductLine Seed Err": err }));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     throw new Error(err.toString());
   }
