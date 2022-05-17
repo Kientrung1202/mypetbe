@@ -9,12 +9,7 @@ export const isExistFile = async (file: string) =>
       resolve(true);
     });
   });
-// export const readFile = async (file: string) => {
-//   fs.readFile(file, "utf8", (error, data) => {
-//     if (error) throw new Error(error.toString());
-//     return data;
-//   });
-// };
+
 export const readFile = async (file: string): Promise<string> =>
   new Promise((resolve, reject) => {
     fs.readFile(file, "utf8", (error, data) => {
@@ -111,19 +106,18 @@ export const generateProductCSV = () => {
     ],
   ];
   const brand = ["TRUTB", "LAPQN"];
-  let result =
-    "productCode;productName;productLine;quantityInStock;textDescription;buyPrice;sellPrice;image\n";
+  let result = `productCode;productName;productLine;quantityInStock;textDescription;buyPrice;sellPrice;image\n`;
   for (let i = 0; i < 60; i++) {
-    const randomLine = Math.floor(Math.random() * 5 * i - 5); // loai nao
+    const randomLine = Math.floor(Math.random() * 5); // loai nao
     const number = productType[randomLine];
-    const randomCode = Math.floor(Math.random() * 20); // ma code bao nhieu
+    const code = i + 1; // ma code bao nhieu
     const productLine = number.productLine;
-    const productCode = number.productLine + `_${randomCode}`;
-    const productName = number.productName + " " + brand[randomCode % 2];
+    const productCode = number.productLine + `_${code}`;
+    const productName = number.productName + " " + brand[code % 2];
     const quantityInStock = Math.floor(Math.random() * 1000);
     const textDescription = "This is our affect";
-    const buyPrice = Math.floor(Math.random() * 100);
-    const sellPrice = buyPrice * 1.3;
+    const buyPrice = Math.floor(Math.random() * 100 + 20);
+    const sellPrice = buyPrice * 1.5;
     const randomImage = Math.floor(Math.random() * 3);
     const image = link[randomLine][randomImage];
     const addLine =
@@ -148,7 +142,6 @@ export const generateProductCSV = () => {
   return new Promise((resolve, reject) => {
     fs.writeFile(pathFile, result, (error) => {
       if (error) {
-        console.log("error write file");
         return reject(error);
       }
       return resolve(true);

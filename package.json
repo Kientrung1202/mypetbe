@@ -19,6 +19,7 @@
     "@types/glob": "^7.2.0",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/morgan": "^1.9.3",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.16.0",
     "@typescript-eslint/parser": "^5.16.0",
     "eslint": "^8.11.0",
@@ -28,7 +29,6 @@
   "dependencies": {
     "@types/body-parser": "^1.19.2",
     "@types/express": "^4.17.13",
-    "@types/globby": "^9.1.0",
     "@types/node": "^17.0.23",
     "@types/sequelize": "^4.28.11",
     "bcrypt": "^5.0.1",
@@ -41,13 +41,13 @@
     "express": "^4.17.3",
     "fs": "^0.0.1-security",
     "glob": "^8.0.1",
-    "globby": "^13.1.1",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
     "pg": "^8.7.3",
     "rimraf": "^3.0.2",
     "sequelize": "^6.19.0",
     "ts-node": "^10.7.0",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.3",
+    "uuid": "^8.3.2"
   }
 }

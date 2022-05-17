@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import "dotenv/config";
 import { createUser, signIn } from "./signup.service";
-import { success } from "../../../../utils/response";
-import CommonError from "../../common/error";
-import { authenticate } from "../../../middleware/authenticate";
+import { success } from "../../../utils/response";
+import CommonError from "./error";
+import { authenticate } from "../../middleware/authenticate";
 import express from "express";
 const router = express.Router();
 

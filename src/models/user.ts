@@ -31,20 +31,9 @@ const Users = db.sequelize.define(
       type: Sequelize.STRING(45),
       allowNull: false,
     },
-    createdAt: {
-      type: Sequelize.DATE,
-      allowNull: false,
-    },
-    lastLogin: {
-      type: Sequelize.DATE,
-      allowNull: false,
-    },
     role: {
       type: Sequelize.INTEGER,
       defaultValue: ROLE.customer,
-      get() {
-        return this.getDataValue("role");
-      },
     },
   },
   {

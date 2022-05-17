@@ -4,15 +4,16 @@ import { STATUSORDER } from "../utils/interface";
 
 export const Orders = db.sequelize.define("orders", {
   orderCode: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
     primaryKey: true,
   },
   orderDate: {
-    type: Sequelize.DATE,
+    type: Sequelize.DATEONLY,
     allowNull: false,
   },
   shippedDate: {
-    type: Sequelize.DATE,
+    type: Sequelize.DATEONLY,
     allowNull: true,
   },
   status: {

@@ -11,7 +11,6 @@ const verifyToken = (req: Request) => {
     throw new Error("No token provided!");
   }
   jwt.verify(token, process.env.SECRET_KEY_JWT || "", (err, decoded) => {
-    console.log(process.env.SECRET_KEY_JWT);
     if (err) throw new Error(err.toString());
     else req.body.user = decoded;
   });
@@ -19,7 +18,6 @@ const verifyToken = (req: Request) => {
 const isUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     verifyToken(req);
-    console.log(req.body.user.userId, "userID day");
     const admin = await Users.findByPk(req.body.user.userId);
     const role = admin?.getDataValue("role");
     if (role && role == ROLE.customer) {
@@ -37,7 +35,7 @@ const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
     console.log(req.body.user.userId, "userID day");
     const admin = await Users.findByPk(req.body.user.userId);
     const role = admin?.getDataValue("role");
-    if (role && role == ROLE.customer) {
+    if (role && role == ROLE.admin) {
       next();
       return;
     }

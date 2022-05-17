@@ -3,7 +3,7 @@ import { ProductLines } from "../models/productLines";
 
 export const generateProductLine = async () => {
   try {
-    const file = await getCSVFiles("productLine");
+    const file = getCSVFiles("productLine");
     const { header, content } = await getContentCSVFiles(file, ";");
     const dataSeed: {
       productLine: string;

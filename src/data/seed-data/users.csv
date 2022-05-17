@@ -1,0 +1,4 @@
+userName;fullName;password;phone;address;role
+kientrung;Nguyen Kien Trung;$2b$10$KGeoevqXqT/sjtQ7p9SWGuhC95Q/q7/2Iegdds7vyL3ZXltxRCQPG;0986312202;Thai Binh;1
+tanlap;Do Tan Lap;$2b$10$mk4CyDJB064cxM7i5Ltvu.Vym4rfHY6KIIYx/D5dS.3mO6811OY3q;0986123123;QuangNinh;2
+admin;Trung Lap;$2b$10$4fkGYGL8D8MswHKCSjpGleiK8OfTt9v2OUWSQgRwDxiSnPa60ZYXq;1231231234;Thai Ninh;2

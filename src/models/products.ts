@@ -13,7 +13,7 @@ export const Products = db.sequelize.define(
       allowNull: false,
     },
     productLine: {
-      type: Sequelize.STRING(45),
+      type: Sequelize.STRING(20),
       allowNull: false,
     },
     quantityInStock: {

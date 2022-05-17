@@ -1,7 +1,7 @@
-import Users from "../../../../models/user";
+import Users from "../../../models/user";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { badRequest, success } from "../../../../utils/response";
+import { badRequest, success } from "../../../utils/response";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 
@@ -53,7 +53,6 @@ export const signIn = async (req: Request, res: Response) => {
                 success({
                   token,
                   userName: userInfo.getDataValue("userName"),
-                  password: userInfo.getDataValue("password"),
                 })
               );
             })

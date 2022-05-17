@@ -6,7 +6,6 @@ export const generateProducts = async () => {
   try {
     await generateProductCSV();
     const dataFile = getCSVFiles("products");
-    console.log(dataFile, "filee");
     const { header, content } = await getContentCSVFiles(dataFile, ";");
     const dataSeed: {
       productCode: string;
@@ -29,7 +28,7 @@ export const generateProducts = async () => {
         textDescription: field[header.indexOf("textDescription")],
         buyPrice: Number(field[header.indexOf("buyPrice")]),
         sellPrice: Number(field[header.indexOf("sellPrice")]),
-        image: field[header.indexOf("image")],
+        image: field[7],
       };
       dataSeed.push(item);
     });
@@ -37,7 +36,7 @@ export const generateProducts = async () => {
       .then(() => {
         return Products.bulkCreate(dataSeed);
       })
-      .catch((err) => console.log({ "products seed Err": err }));
+      .catch((err) => console.log({ "Seed production err": err }));
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {

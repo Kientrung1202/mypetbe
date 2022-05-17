@@ -19,12 +19,11 @@ app.listen(port, () => {
 });
 
 const connectDb = () => {
-  generateDb().then(() => {
-    db.sequelize
-      .authenticate()
-      .then(() => console.log("Connect database successfully"))
-      .catch((err: Error) => console.log("Enable connect database", err));
-  });
+  db.sequelize
+    .authenticate()
+    .then(() => console.log("Connectt database successfully"))
+    .catch((err: Error) => console.log("Enable connect database", err));
+  generateDb();
 };
 
 const initApi = () => {
@@ -40,7 +39,6 @@ const initApi = () => {
   // list router and use it
   // dung docker goi vao thi no ra __dirname = app/dist
   glob(__dirname + "/**/*.controller.js", {}, (err, files) => {
-    console.log(__dirname);
     files.map((file: string) => {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const api = require(file);

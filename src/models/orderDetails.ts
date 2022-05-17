@@ -3,7 +3,7 @@ import { db } from "../db";
 
 export const OrderDetails = db.sequelize.define("orderdetails", {
   orderCode: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.UUID,
     allowNull: false,
   },
   productCode: {
