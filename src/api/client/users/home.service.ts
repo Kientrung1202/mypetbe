@@ -57,6 +57,10 @@ export const getListProduct = async (req: Request, res: Response) => {
   return res.json(success(data));
 };
 
+export const getAllProduct = async (req: Request, res: Response) => {
+  Products.findAll().then((data) => res.json(success(data)));
+};
+
 export const createOrder = async (req: Request, res: Response) => {
   const now = new Date();
   const userId = req.body.user.userId;
