@@ -29,7 +29,7 @@ const Users = db.sequelize.define(
     },
     address: {
       type: Sequelize.STRING(45),
-      allowNull: false,
+      allowNull: true,
     },
     role: {
       type: Sequelize.INTEGER,
