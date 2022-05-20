@@ -5,6 +5,9 @@ import { ProductLines } from "../../../models/productLines";
 import { Products } from "../../../models/products";
 import { badRequest, success } from "../../../utils/response";
 import { v4 as uuidv4 } from "uuid";
+import { Cart } from "../../../models/cart";
+import { where } from "sequelize/types";
+import { CartItem } from "../../../models/cartItem";
 
 export const getListProductLine = async (req: Request, res: Response) => {
   const productLine = await ProductLines.findAll();
@@ -52,13 +55,18 @@ export const getListProduct = async (req: Request, res: Response) => {
     product: pro,
   };
   data.push(item);
-  // console.log({ data });
-  // });
   return res.json(success(data));
 };
 
 export const getAllProduct = async (req: Request, res: Response) => {
   Products.findAll().then((data) => res.json(success(data)));
+};
+
+export const getDetailProduct = async (req: Request, res: Response) => {
+  const productCode = req.params.code;
+  Products.findByPk(productCode)
+    .then((product) => res.json(success(product)))
+    .catch((err) => res.json(err));
 };
 
 export const createOrder = async (req: Request, res: Response) => {
@@ -92,6 +100,27 @@ export const createOrder = async (req: Request, res: Response) => {
   }
 };
 
-// export const getOrderDetail = async (req: Request, res: Response) => {
+export const getProOfCart = async (req: Request, res: Response) => {
+  const userId = req.body.user.userId;
+  const cart = await Cart.findAll({ where: { userId } });
+  if (cart.length == 0) return res.json(badRequest("Your cart is Empty"));
+  const cartId = cart[0].getDataValue("cartId");
+  await CartItem.findAll({
+    attributes: ["productCode", "quantity"],
+    where: { cartId },
+  }).then((result) => res.json(success(result)));
+};
 
-// }
+export const addToCart = async (req: Request, res: Response) => {
+  const userId = req.body.user.userId;
+  const { productCode, quantity } = req.body;
+  console.log({ userId });
+  await Cart.findAll({ where: { userId } }).then(async (cart) => {
+    if (cart.length == 0) await Cart.create({ userId });
+  });
+  const cart = await Cart.findAll({ where: { userId } });
+  const cartId = cart[0]?.getDataValue("cartId");
+  await CartItem.create({ cartId, productCode, quantity })
+    .then(() => res.json(success("Add to cart successfully!")))
+    .catch((err) => res.json(badRequest(err)));
+};

@@ -18,8 +18,8 @@ const verifyToken = (req: Request) => {
 const isUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     verifyToken(req);
-    const admin = await Users.findByPk(req.body.user.userId);
-    const role = admin?.getDataValue("role");
+    const user = await Users.findByPk(req.body.user.userId);
+    const role = user?.getDataValue("role");
     if (role && role == ROLE.customer) {
       next();
       return;

@@ -44,7 +44,6 @@ const initApi = () => {
       const api = require(file);
       app.use(api);
     });
-    console.log(files);
     console.log("init api successfully");
   });
 };
