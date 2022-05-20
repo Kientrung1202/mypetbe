@@ -6,7 +6,6 @@ import { Products } from "../../../models/products";
 import { badRequest, success } from "../../../utils/response";
 import { v4 as uuidv4 } from "uuid";
 import { Cart } from "../../../models/cart";
-import { where } from "sequelize/types";
 import { CartItem } from "../../../models/cartItem";
 
 export const getListProductLine = async (req: Request, res: Response) => {
