@@ -106,7 +106,13 @@ export const getProOfCart = async (req: Request, res: Response) => {
   if (cart.length == 0) return res.json(badRequest("Your cart is Empty"));
   const cartId = cart[0].getDataValue("cartId");
   await CartItem.findAll({
-    attributes: ["productCode", "quantity"],
+    attributes: [
+      "productCode",
+      "quantity",
+      "image",
+      "productName",
+      "sellPrice",
+    ],
     where: { cartId },
   }).then((result) => res.json(success(result)));
 };

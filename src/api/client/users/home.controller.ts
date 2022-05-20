@@ -3,6 +3,7 @@ import { authJwt } from "../../middleware/authJwt";
 import {
   addToCart,
   createOrder,
+  deleteToCart,
   getAllProduct,
   getDetailProduct,
   getListProduct,
@@ -36,5 +37,7 @@ router.get("/cart", authJwt.isUser, (req: Request, res: Response) => {
 router.post("/cart", authJwt.isUser, (req: Request, res: Response) =>
   addToCart(req, res)
 );
-
+router.delete("/cart", authJwt.isUser, (req: Request, res: Response) =>
+  deleteToCart(req, res)
+);
 module.exports = router;
