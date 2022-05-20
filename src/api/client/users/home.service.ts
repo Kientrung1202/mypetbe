@@ -124,3 +124,13 @@ export const addToCart = async (req: Request, res: Response) => {
     .then(() => res.json(success("Add to cart successfully!")))
     .catch((err) => res.json(badRequest(err)));
 };
+
+export const deleteToCart = async (req: Request, res: Response) => {
+  const userId = req.body.user.userId;
+  const { productCode } = req.body;
+  const cart = await Cart.findAll({ where: { userId } });
+  const cartId = cart[0]?.getDataValue("cartId");
+  await CartItem.destroy({ where: { cartId, productCode } })
+    .then(() => res.json(success("Delete from cart successfully!")))
+    .catch((err) => res.json(badRequest(err)));
+};
