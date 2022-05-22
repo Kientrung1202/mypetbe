@@ -25,6 +25,7 @@ const isUser = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
     throw Error("You must be authorization!");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     return CommonError(req, res, err);
   }
@@ -40,6 +41,7 @@ const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
     throw Error("You must be authorization!");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     return CommonError(req, res, err);
   }
