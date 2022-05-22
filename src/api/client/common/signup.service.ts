@@ -53,6 +53,7 @@ export const signIn = async (req: Request, res: Response) => {
                 success({
                   token,
                   userName: userInfo.getDataValue("userName"),
+                  role: userInfo.getDataValue("role"),
                 })
               );
             })
