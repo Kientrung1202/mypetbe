@@ -103,7 +103,7 @@ export const getProOfCart = async (req: Request, res: Response) => {
   const userId = req.body.user.userId;
   const cart = await Cart.findAll({ where: { userId } });
   if (cart.length == 0) return res.json(badRequest("Your cart is Empty"));
-  const cartId = cart[0].getDataValue("cartId");
+  const cartId = cart[0]?.getDataValue("cartId");
   await CartItem.findAll({
     attributes: [
       "productCode",
@@ -119,7 +119,6 @@ export const getProOfCart = async (req: Request, res: Response) => {
 export const addToCart = async (req: Request, res: Response) => {
   const userId = req.body.user.userId;
   const { productCode, quantity } = req.body;
-  console.log({ userId });
   await Cart.findAll({ where: { userId } }).then(async (cart) => {
     if (cart.length == 0) await Cart.create({ userId });
   });

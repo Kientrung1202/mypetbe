@@ -10,5 +10,6 @@ export const Cart = db.sequelize.define("carts", {
   userId: {
     type: Sequelize.UUID,
     unique: true,
+    allowNull: false,
   },
 });
