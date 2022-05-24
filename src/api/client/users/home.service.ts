@@ -102,18 +102,34 @@ export const createOrder = async (req: Request, res: Response) => {
 export const getProOfCart = async (req: Request, res: Response) => {
   const userId = req.body.user.userId;
   const cart = await Cart.findAll({ where: { userId } });
+  const results: {
+    productCode: string;
+    quantity: number;
+    image: string;
+    productName: string;
+    sellPrice: number;
+  }[] = [];
   if (cart.length == 0) return res.json(badRequest("Your cart is Empty"));
   const cartId = cart[0]?.getDataValue("cartId");
-  await CartItem.findAll({
-    attributes: [
-      "productCode",
-      "quantity",
-      "image",
-      "productName",
-      "sellPrice",
-    ],
-    where: { cartId },
-  }).then((result) => res.json(success(result)));
+  const cartItem = await CartItem.findAll({ where: { cartId } });
+  await Promise.all(
+    cartItem.map(async (item) => {
+      const productCode = item.getDataValue("productCode");
+      await Products.findByPk(productCode).then((product) => {
+        console.log(product);
+        const data = {
+          productCode,
+          quantity: cartItem[0]?.getDataValue("quantity"),
+          image: product?.getDataValue("image"),
+          productName: product?.getDataValue("productName"),
+          sellPrice: product?.getDataValue("sellPrice"),
+        };
+        results.push(data);
+        console.log(results);
+      });
+    })
+  );
+  return res.json(success(results));
 };
 
 export const addToCart = async (req: Request, res: Response) => {
