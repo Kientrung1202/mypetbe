@@ -21,9 +21,11 @@ app.listen(port, () => {
 const connectDb = () => {
   db.sequelize
     .authenticate()
-    .then(() => console.log("Connectt database successfully"))
+    .then(() => {
+      console.log("Connectt database successfully");
+      generateDb();
+    })
     .catch((err: Error) => console.log("Enable connect database", err));
-  generateDb();
 };
 
 const initApi = () => {

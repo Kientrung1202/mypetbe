@@ -7,6 +7,7 @@ import { badRequest, success } from "../../../utils/response";
 import { v4 as uuidv4 } from "uuid";
 import { Cart } from "../../../models/cart";
 import { CartItem } from "../../../models/cartItem";
+import { Op } from "sequelize";
 
 export const getListProductLine = async (req: Request, res: Response) => {
   const productLine = await ProductLines.findAll();
@@ -58,7 +59,46 @@ export const getListProduct = async (req: Request, res: Response) => {
 };
 
 export const getAllProduct = async (req: Request, res: Response) => {
-  Products.findAll().then((data) => res.json(success(data)));
+  const { search, sort } = req.query;
+  if (search == "") {
+    if (sort == "") Products.findAll().then((data) => res.json(success(data)));
+    else if (sort == "priceDesc")
+      Products.findAll({ order: [["sellPrice", "DESC"]] }).then((data) =>
+        res.json(success(data))
+      );
+    else if (sort == "priceAsc")
+      Products.findAll({ order: [["sellPrice", "ASC"]] }).then((data) =>
+        res.json(success(data))
+      );
+  } else if (search != "") {
+    if (sort == "")
+      Products.findAll({
+        where: {
+          productName: {
+            [Op.like]: `%${search}%`,
+          },
+        },
+      }).then((data) => res.json(success(data)));
+    else if (sort == "priceDesc")
+      Products.findAll({
+        where: {
+          productName: {
+            [Op.like]: `%${search}%`,
+          },
+        },
+        order: [["sellPrice", "DESC"]],
+      }).then((data) => res.json(success(data)));
+    else if (sort == "priceAsc") {
+      Products.findAll({
+        where: {
+          productName: {
+            [Op.like]: `%${search}%`,
+          },
+        },
+        order: [["sellPrice", "ASC"]],
+      }).then((data) => res.json(success(data)));
+    }
+  }
 };
 
 export const getDetailProduct = async (req: Request, res: Response) => {
@@ -115,18 +155,17 @@ export const getProOfCart = async (req: Request, res: Response) => {
   await Promise.all(
     cartItem.map(async (item) => {
       const productCode = item.getDataValue("productCode");
-      await Products.findByPk(productCode).then((product) => {
-        console.log(product);
-        const data = {
-          productCode,
-          quantity: cartItem[0]?.getDataValue("quantity"),
-          image: product?.getDataValue("image"),
-          productName: product?.getDataValue("productName"),
-          sellPrice: product?.getDataValue("sellPrice"),
-        };
-        results.push(data);
-        console.log(results);
-      });
+      const product = await Products.findByPk(productCode);
+      console.log(product);
+      const data = {
+        productCode,
+        quantity: cartItem[0]?.getDataValue("quantity"),
+        image: product?.getDataValue("image"),
+        productName: product?.getDataValue("productName"),
+        sellPrice: product?.getDataValue("sellPrice"),
+      };
+      results.push(data);
+      console.log(results);
     })
   );
   return res.json(success(results));
@@ -150,7 +189,7 @@ export const deleteToCart = async (req: Request, res: Response) => {
   const { productCode } = req.body;
   const cart = await Cart.findAll({ where: { userId } });
   const cartId = cart[0]?.getDataValue("cartId");
-  await CartItem.destroy({ where: { cartId, productCode } })
+  await CartItem.destroy({ where: { cartId } })
     .then(() => res.json(success("Delete from cart successfully!")))
     .catch((err) => res.json(badRequest(err)));
 };
