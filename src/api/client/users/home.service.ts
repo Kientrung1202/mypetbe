@@ -124,14 +124,23 @@ export const createOrder = async (req: Request, res: Response) => {
       userId,
       orderDate,
     });
-    products.map(async (product) => {
-      const { productCode, quantityOrdered } = product;
-      await OrderDetails.create({
-        orderCode,
-        productCode,
-        quantityOrdered,
-      });
-    });
+    await Promise.all(
+      products.map(async (product) => {
+        const { productCode, quantityOrdered } = product;
+        await OrderDetails.create({
+          orderCode,
+          productCode,
+          quantityOrdered,
+        });
+        const itemProduct = await Products.findByPk(productCode);
+        const restQuantity =
+          itemProduct?.getDataValue("quantityInStock") - quantityOrdered;
+        await Products.update(
+          { quantityInStock: restQuantity },
+          { where: { productCode } }
+        );
+      })
+    );
 
     return res.json(success("add order ok"));
   } catch (err: any) {
@@ -167,8 +176,7 @@ export const getProOfCart = async (req: Request, res: Response) => {
       results.push(data);
       console.log(results);
     })
-  );
-  return res.json(success(results));
+  ).then(() => res.json(success(results)));
 };
 
 export const addToCart = async (req: Request, res: Response) => {
