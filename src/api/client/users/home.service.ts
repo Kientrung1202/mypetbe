@@ -194,9 +194,10 @@ export const addToCart = async (req: Request, res: Response) => {
 
 export const deleteToCart = async (req: Request, res: Response) => {
   const { productCode } = req.body;
-  const cart = await Cart.findAll({ where: { productCode } });
+  const userId = req.body.user.userId;
+  const cart = await Cart.findAll({ where: { userId } });
   const cartId = cart[0]?.getDataValue("cartId");
-  await CartItem.destroy({ where: { cartId } })
+  await CartItem.destroy({ where: { productCode, cartId } })
     .then(() => res.json(success("Delete from cart successfully!")))
     .catch((err) => res.json(badRequest(err)));
 };
