@@ -140,9 +140,9 @@ export const createOrder = async (req: Request, res: Response) => {
           { where: { productCode } }
         );
       })
-    );
-
-    return res.json(success("add order ok"));
+    )
+      .then(() => res.json(success("add order ok")))
+      .catch((err) => res.json(badRequest(err)));
   } catch (err: any) {
     return res.json(badRequest(err.toString()));
   }
@@ -198,6 +198,15 @@ export const deleteToCart = async (req: Request, res: Response) => {
   const cart = await Cart.findAll({ where: { userId } });
   const cartId = cart[0]?.getDataValue("cartId");
   await CartItem.destroy({ where: { productCode, cartId } })
+    .then(() => res.json(success("Delete from cart successfully!")))
+    .catch((err) => res.json(badRequest(err)));
+};
+
+export const deleteAllInCart = async (req: Request, res: Response) => {
+  const userId = req.body.user.userId;
+  const cart = await Cart.findAll({ where: { userId } });
+  const cartId = cart[0]?.getDataValue("cartId");
+  await CartItem.destroy({ where: { cartId } })
     .then(() => res.json(success("Delete from cart successfully!")))
     .catch((err) => res.json(badRequest(err)));
 };

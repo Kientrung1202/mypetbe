@@ -33,44 +33,57 @@ export const getAllOrder = async (req: Request, res: Response) => {
 };
 
 export const getDetailOrder = async (req: Request, res: Response) => {
-  const { orderCode } = req.body.params;
+  const orderCode = req.params.orderCode;
   const products: any[] = [];
+  const order = await Orders.findByPk(orderCode);
+  const userId = order?.getDataValue("userId");
+  const status = order?.getDataValue("status");
+  const user = await Users.findByPk(userId);
   const orderDetails = await OrderDetails.findAll({ where: { orderCode } });
   let amount = 0;
+  const userInfo = {
+    name: user?.getDataValue("fullName"),
+    phone: user?.getDataValue("phone"),
+    address: user?.getDataValue("address"),
+  };
   let results = {
+    status,
     amount,
     products,
+    userInfo,
   };
   await Promise.all(
     orderDetails.map(async (detail) => {
       const productCode = detail.getDataValue("productCode");
-      await Products.findByPk(productCode)
-        .then((data) => {
-          const quantityOrder = detail.getDataValue("quantityOrdered");
-          const productName = data?.getDataValue("productName");
-          const sellPrice = data?.getDataValue("sellPrice");
-          const amountItem = quantityOrder * sellPrice;
-          amount += amountItem;
-          const item = {
-            quantityOrder,
-            productName,
-            sellPrice,
-          };
-          products.push(item);
-          results = {
-            amount,
-            products,
-          };
-        })
-        .then(() => res.json(success(results)))
-        .catch((err) => res.json(badRequest(err)));
+      await Products.findByPk(productCode).then((data) => {
+        const quantityOrder = detail.getDataValue("quantityOrdered");
+        console.log({ quantityOrder });
+        const productName = data?.getDataValue("productName");
+        const sellPrice = data?.getDataValue("sellPrice");
+        const amountItem = quantityOrder * sellPrice;
+        amount += amountItem;
+        const item = {
+          quantityOrder,
+          productName,
+          sellPrice,
+        };
+        products.push(item);
+        results = {
+          status,
+          userInfo,
+          amount,
+          products,
+        };
+      });
     })
-  );
+  )
+    .then(() => res.json(success(results)))
+    .catch((err) => res.json(badRequest(err)));
 };
 
 export const updateOrder = async (req: Request, res: Response) => {
-  const { shippedDate, status, orderCode } = req.body;
-  await Orders.update({ shippedDate, status }, { where: { orderCode } })
+  const { status, orderCode } = req.body;
+  await Orders.update({ status }, { where: { orderCode } })
     .then(() => res.json("Update successfully"))
     .catch((err) => res.json(err));
 };
