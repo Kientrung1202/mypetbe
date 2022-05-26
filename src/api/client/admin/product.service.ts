@@ -37,6 +37,6 @@ export const addProduct = async (req: Request, res: Response) => {
     buyPrice,
     image,
   })
-    .then(() => res.json(success("Add product successfully!")))
+    .then(() => res.json(success("Add product successfully!!!")))
     .catch((err) => res.json(badRequest(err)));
 };

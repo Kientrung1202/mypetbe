@@ -109,14 +109,14 @@ export const getDetailProduct = async (req: Request, res: Response) => {
 };
 
 export const createOrder = async (req: Request, res: Response) => {
-  const now = new Date();
+  const orderDate = new Date();
   const userId = req.body.user.userId;
   const products: {
     productCode: string;
     quantityOrdered: number;
   }[] = req.body.products;
-  const orderDate =
-    now.getFullYear() + "-" + now.getMonth() + "-" + now.getDay();
+  // const orderDate =
+  //   now.getFullYear() + "-" + now.getMonth() + "-" + now.getDay();
   const orderCode = uuidv4();
   try {
     await Orders.create({

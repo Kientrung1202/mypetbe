@@ -3,8 +3,8 @@ export enum ROLE {
   admin,
 }
 export enum STATUSORDER {
-  CANCEL = 0,
-  PREPARE,
+  PREPARE = 1,
   SHIPPING,
   DONE,
+  CANCEL,
 }
