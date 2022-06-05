@@ -41,7 +41,7 @@ To get a local copy up and running follow these simple example steps.
 - Entity Relation Diagram
 <br />
 <div style="margin: 0 auto;">
-<img style="margin: 0 auto;width: 800px;height: 600px;" src="about/erd.png" />
+<img style="margin: 0 auto;width: 800px;" src="about/erd.PNG" />
 </div>
 
 
